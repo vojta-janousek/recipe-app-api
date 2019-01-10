@@ -315,13 +315,13 @@ class RecipeImageUploadTests(TestCase):
         recipe2 = sample_recipe(user=self.user, title='Chicken cacciatore')
         ingredient1 = sample_ingredient(user=self.user, name='Feta cheese')
         ingredient2 = sample_ingredient(user=self.user, name='Chicken')
-        recipe.ingredients.add(ingredient1)
-        recipe.ingredients.add(ingredient2)
+        recipe1.ingredients.add(ingredient1)
+        recipe2.ingredients.add(ingredient2)
         recipe3 = sample_recipe(user=self.user, title='Steak and mushrooms')
 
         res = self.client.get(
             RECIPES_URL,
-            {'ingredients': f'{ingredient1},{ingredients}'}
+            {'ingredients': f'{ingredient1.id},{ingredient2.id}'}
         )
 
         serializer1 = RecipeSerializer(recipe1)
@@ -330,4 +330,4 @@ class RecipeImageUploadTests(TestCase):
 
         self.assertIn(serializer1.data, res.data)
         self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
